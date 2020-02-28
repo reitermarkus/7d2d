@@ -17,7 +17,7 @@ COPY --from=builder /home/steam/server /server
 RUN apt-get update \
  && apt-get install -y --no-install-recommends --no-install-suggests telnet \
  && rm -rf /var/lib/apt/lists/* \
- && mkdir -p /etc/7d2d/{data,save}
+ && mkdir -p /etc/7d2d
 
 COPY entrypoint.sh /entrypoint.sh
 CMD ["/entrypoint.sh"]

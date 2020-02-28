@@ -43,8 +43,7 @@ cat > serverconfig.xml <<EOF
 
   <!-- Folder and file locations -->
   <property name="AdminFileName"                      value="serveradmin.xml"/>
-  <property name="UserDataFolder"                     value="/etc/7d2d/data"/>
-  <property name="SaveGameFolder"                     value="/etc/7d2d/save"/>
+  <property name="UserDataFolder"                     value="/etc/7d2d"/>
 
   <!-- Other Technical Settings -->
   <property name="EACEnabled"                         value="${SDTD_EAC_ENABLED:-true}"/>
