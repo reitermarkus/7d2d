@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -euo pipefail
+
+set -x
+
+env | sort
+
+TAG="${IMAGE_NAME##*:}"
+
+args=
+
+if [[ "${TAG}" != latest ]]; then
+  args=(--build-arg VERSION="${TAG}")
+fi
+
+docker build "${args[@]}" -f "${DOCKERFILE_PATH}" -t "${IMAGE_NAME}" .
