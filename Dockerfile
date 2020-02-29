@@ -2,7 +2,7 @@ FROM cm2network/steamcmd as builder
 
 ARG VERSION=stable
 
-COPY entrypoint.sh /home/steam/server/entrypoint.sh
+COPY --chown=steam:steam entrypoint.sh /home/steam/server/entrypoint.sh
 
 RUN ./steamcmd.sh \
       +@ShutdownOnFailedCommand 1 \
