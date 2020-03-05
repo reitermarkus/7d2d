@@ -2,6 +2,12 @@
 
 set -euo pipefail
 
+while IFS='=' read -r name value ; do
+  if [[ "${name}" =~ ^7D2D_ ]]; then
+    declare "${name/#7D2D_/SDTD_}=${value}"
+  fi
+done < <(env)
+
 cd /server
 
 cat > serverconfig.xml <<EOF
