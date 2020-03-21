@@ -106,8 +106,8 @@ cat > serverconfig.xml <<EOF
   <property name="AirDropMarker"                       value="${SDTD_AIR_DROP_MARKER:-false}"/>
 
   <!-- Multiplayer -->
-  <property name="PartySharedKillRange"                value="${SDTD_PartySharedKillRange:-100}"/>
-  <property name="PlayerKillingMode"                   value="${SDTD_PlayerKillingMode:-3}"/>
+  <property name="PartySharedKillRange"                value="${SDTD_PARTY_SHARED_KILL_RANGE:-100}"/>
+  <property name="PlayerKillingMode"                   value="${SDTD_PLAYER_KILLING_MODE:-3}"/>
 
   <!-- Land Claim Options -->
   <property name="LandClaimCount"                      value="${SDTD_LAND_CLAIM_COUNT:-1}"/>
