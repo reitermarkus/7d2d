@@ -35,6 +35,7 @@ cat > serverconfig.xml <<EOF
   <property name="ServerPort"                         value="${SDTD_SERVER_PORT:-26900}"/>
   <property name="ServerVisibility"                   value="${SDTD_SERVER_VISIBILITY:-2}"/>
   <property name="ServerDisabledNetworkProtocols"     value="${SDTD_SERVER_DISABLED_NETWORK_PROTOCOLS:-SteamNetworking}"/>
+  <property name="ServerIP"                           value="${SDTD_SERVER_IP:-}"/>
 
   <!-- Slots -->
   <property name="ServerMaxPlayerCount"               value="${SDTD_SERVER_MAX_PLAYER_COUNT:-8}"/>
