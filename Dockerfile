@@ -2,8 +2,6 @@ FROM cm2network/steamcmd as builder
 
 ARG VERSION=stable
 
-COPY --chown=steam:steam entrypoint.sh /home/steam/server/entrypoint.sh
-
 RUN ./steamcmd.sh \
       +@ShutdownOnFailedCommand 1 \
       +@NoPromptForPassword 1 \
@@ -14,6 +12,6 @@ RUN ./steamcmd.sh \
 
 FROM debian:buster-slim
 
-CMD ["/server/entrypoint.sh"]
-
 COPY --from=builder /home/steam/server /server
+COPY entrypoint.sh /server/entrypoint.sh
+CMD ["/server/entrypoint.sh"]
