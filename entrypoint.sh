@@ -57,7 +57,7 @@ cat > serverconfig.xml <<EOF
 
   <property name="TerminalWindowEnabled"              value="false"/>
 
-  <!-- Folder and file locations -->
+  <!-- Folder and File Locations -->
   <property name="AdminFileName"                      value="serveradmin.xml"/>
   <property name="UserDataFolder"                     value="/etc/7d2d"/>
 
