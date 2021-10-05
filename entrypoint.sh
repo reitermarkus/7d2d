@@ -175,10 +175,14 @@ wait_for_server() {
   exit "${exit_code}"
 }
 
-trap '
-  echo "Shutting down."
-  /graceful-shutdown || kill -INT "${server_pid}"
+graceful_shutdown() {
+  signal="${1}"
+  echo "Received ${signal}, shutting down."
+  /graceful-shutdown || kill "${server_pid}"
   wait_for_server
-' INT
+}
+
+trap 'graceful_shutdown SIGINT' INT
+trap 'graceful_shutdown SIGTERM' TERM
 
 wait_for_server
