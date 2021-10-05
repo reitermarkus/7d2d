@@ -22,12 +22,9 @@ while IFS='=' read -r name value ; do
   fi
 done < <(env)
 
-if [[ -d "${DATA_DIR}/Mods" ]]; then
-  echo "Linking 'Mods' directory."
-  ln -sfn "${DATA_DIR}/Mods" Mods
-else
-  rm -f Mods
-fi
+MODS_DIR="${DATA_DIR}/Mods"
+mkdir -p "${MODS_DIR}"
+ln -sfn "${MODS_DIR}" Mods
 
 # These are needed for the graceful shutdown script.
 export SDTD_TELNET_PORT="${SDTD_TELNET_PORT-8081}"
