@@ -2,13 +2,24 @@
 
 set -euo pipefail
 
+SERVER_DIR=/server
+mkdir -p "${SERVER_DIR}"
+pushd "${SERVER_DIR}"
+
+steamcmd \
+  +@ShutdownOnFailedCommand 1 \
+  +@NoPromptForPassword 1 \
+  +login anonymous \
+  +force_install_dir "${SERVER_DIR}" \
+  +app_update 294420 ${VERSION+-beta "${VERSION}"} validate \
+  +quit &
+update_pid=$!
+
 while IFS='=' read -r name value ; do
   if [[ "${name}" =~ ^7D2D_ ]]; then
     declare "${name/#7D2D_/SDTD_}=${value}"
   fi
 done < <(env)
-
-cd /server
 
 if [[ -d /etc/7d2d/Mods ]]; then
   if [[ -e Mods ]]; then
@@ -35,9 +46,9 @@ cat > serverconfig.xml <<EOF
   <property name="ServerVisibility"                   value="${SDTD_SERVER_VISIBILITY-2}"/>
   <property name="ServerDisabledNetworkProtocols"     value="${SDTD_SERVER_DISABLED_NETWORK_PROTOCOLS-SteamNetworking}"/>
   <property name="ServerMaxWorldTransferSpeedKiBs"    value="${SDTD_SERVER_MAX_WORLD_DOWNLOAD_SPEED_KIBS-512}"/>
-  <property name="ServerIP"                           value="${SDTD_SERVER_IP-127.0.0.1}"/>
+  <property name="ServerIP"                           value="${SDTD_SERVER_IP-0.0.0.0}"/>
   <property name="ServerPort"                         value="${SDTD_SERVER_PORT-26900}"/>
-  <property name="ConnectToServerIP"                  value="${SDTD_CONNECT_TO_SERVER_IP-127.0.0.1}"/>
+  <property name="ConnectToServerIP"                  value="${SDTD_CONNECT_TO_SERVER_IP-0.0.0.0}"/>
   <property name="ConnectToServerPort"                value="${SDTD_CONNECT_TO_SERVER_PORT-26900}"/>
 
   <!-- Slots -->
@@ -62,7 +73,7 @@ cat > serverconfig.xml <<EOF
 
   <!-- Folder and File Locations -->
   <property name="AdminFileName"                      value="serveradmin.xml"/>
-  <property name="UserDataFolder"                     value="/etc/7d2d"/>
+  <property name="UserDataFolder"                     value="/data"/>
 
   <!-- Other Technical Settings -->
   <property name="EACEnabled"                         value="${SDTD_EAC_ENABLED-true}"/>
@@ -135,10 +146,21 @@ EOF
 
 export LD_LIBRARY_PATH=.
 
-exec ./7DaysToDieServer.x86_64 \
-       -configfile=./serverconfig.xml \
-       -logfile /dev/stdout \
-       -quit \
-       -batchmode \
-       -nographics \
-       -dedicated
+if ! [[ -f ./7DaysToDieServer.x86_64 ]]; then
+  wait "${update_pid}"
+fi
+
+exit_code=0
+./7DaysToDieServer.x86_64 \
+  -configfile=./serverconfig.xml \
+  -logfile /dev/stdout \
+  -quit \
+  -batchmode \
+  -nographics \
+  -dedicated || exit_code=$?
+
+if [[ "${exit_code}" -ne 0 ]]; then
+  wait "${update_pid}"
+fi
+
+exit "${exit_code}"

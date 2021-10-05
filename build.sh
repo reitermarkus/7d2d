@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-versions=(alpha19.6 alpha18.4 alpha17.4)
+image='reitermarkus/7d2d'
 
-for version in "${versions[@]}"; do
-  docker build --build-arg "VERSION=${version}" --cache-from "reitermarkus/7d2d:${version}" -t "reitermarkus/7d2d:${version}" .
-done
+docker build --cache-from "${image}" -t "${image}" .
 
-for version in "${versions[@]}"; do
-  docker push "reitermarkus/7d2d:${version}"
-done
+if [[ "${1}" == '--push' ]]; then
+  docker push "${image}"
+fi
