@@ -12,7 +12,7 @@ steamcmd \
   +@NoPromptForPassword 1 \
   +login anonymous \
   +force_install_dir "${SERVER_DIR}" \
-  +app_update 294420 ${VERSION+-beta "${VERSION}"} validate \
+  +app_update 294420 ${VERSION+-beta "${VERSION}"} -validate \
   +quit &
 update_pid=$!
 
