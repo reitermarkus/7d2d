@@ -7,7 +7,6 @@ set password $::env(SDTD_TELNET_PASSWORD)
 spawn telnet localhost $port
 
 expect {
-  "Connection refused" exit
   "Please enter password:" {
     log_user 0
     send "$password\r"
