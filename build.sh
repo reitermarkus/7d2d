@@ -6,6 +6,6 @@ image='reitermarkus/7d2d'
 
 docker build --cache-from "${image}" -t "${image}" .
 
-if [[ "${1}" == '--push' ]]; then
+if [[ "${1-}" == '--push' ]]; then
   docker push "${image}"
 fi
