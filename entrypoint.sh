@@ -2,6 +2,7 @@
 
 set -euo pipefail
 
+DATA_DIR=/data
 SERVER_DIR=/server
 mkdir -p "${SERVER_DIR}"
 pushd "${SERVER_DIR}"
@@ -21,13 +22,11 @@ while IFS='=' read -r name value ; do
   fi
 done < <(env)
 
-if [[ -d /etc/7d2d/Mods ]]; then
-  if [[ -e Mods ]]; then
-    echo 'Warning: Mods directory already exists, skipping linking /etc/7d2d/Mods.' 1>&2
-  else
-    echo 'Linking /etc/7d2d/Mods to Mods directory.'
-    ln -s /etc/7d2d/Mods Mods
-  fi
+if [[ -d "${DATA_DIR}/Mods" ]]; then
+  echo "Linking 'Mods' directory."
+  ln -sfn "${DATA_DIR}/Mods" Mods
+else
+  rm -f Mods
 fi
 
 cat > serverconfig.xml <<EOF
