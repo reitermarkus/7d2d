@@ -1,0 +1,26 @@
+#!/usr/bin/expect -f
+
+set timeout 5
+set port $::env(SDTD_TELNET_PORT)
+set password $::env(SDTD_TELNET_PASSWORD)
+
+spawn telnet localhost $port
+
+expect {
+  "Connection refused" exit
+  "Please enter password:" {
+    log_user 0
+    send "$password\r"
+    log_user 1
+  }
+}
+
+send "saveworld\r"
+expect {
+  "World saved\r" {}
+  "Command 'saveworld' can only be executed when a game is started." {}
+}
+
+send "shutdown\r"
+send "exit\r"
+expect eof

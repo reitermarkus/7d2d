@@ -29,6 +29,10 @@ else
   rm -f Mods
 fi
 
+# These are needed for the graceful shutdown script.
+export SDTD_TELNET_PORT="${SDTD_TELNET_PORT-8081}"
+export SDTD_TELNET_PASSWORD="${SDTD_TELNET_PASSWORD-CHANGEME}"
+
 cat > serverconfig.xml <<EOF
 <?xml version="1.0"?>
 <ServerSettings>
@@ -63,8 +67,8 @@ cat > serverconfig.xml <<EOF
   <property name="ControlPanelPassword"               value="${SDTD_CONTROL_PANEL_PASSWORD-CHANGEME}"/>
 
   <property name="TelnetEnabled"                      value="true"/>
-  <property name="TelnetPort"                         value="${SDTD_TELNET_PORT-8081}"/>
-  <property name="TelnetPassword"                     value="${SDTD_TELNET_PASSWORD-CHANGEME}"/>
+  <property name="TelnetPort"                         value="${SDTD_TELNET_PORT}"/>
+  <property name="TelnetPassword"                     value="${SDTD_TELNET_PASSWORD}"/>
   <property name="TelnetFailedLoginLimit"             value="${SDTD_TELNET_FAILED_LOGIN_LIMIT-10}"/>
   <property name="TelnetFailedLoginsBlocktime"        value="${SDTD_TELNET_FAILED_LOGINS_BLOCKTIME-10}"/>
 
@@ -156,10 +160,25 @@ exit_code=0
   -quit \
   -batchmode \
   -nographics \
-  -dedicated || exit_code=$?
+  -dedicated &
+server_pid=$!
 
-if [[ "${exit_code}" -ne 0 ]]; then
-  wait "${update_pid}"
-fi
+wait_for_server() {
+  wait "${server_pid}" || exit_code=$?
 
-exit "${exit_code}"
+  # If the server failed, wait for the update to complete
+  # to ensure all filed are validated for the next start.
+  if [[ "${exit_code}" -ne 0 ]]; then
+    wait "${update_pid}"
+  fi
+
+  exit "${exit_code}"
+}
+
+trap '
+  echo "Shutting down."
+  /graceful-shutdown || kill -INT "${server_pid}"
+  wait_for_server
+' INT
+
+wait_for_server
