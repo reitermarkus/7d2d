@@ -59,7 +59,7 @@ cat > serverconfig.xml <<EOF
   <property name="ServerAdminSlotsPermission"         value="${SDTD_SERVER_ADMIN_SLOTS_PERMISSION-0}"/>
 
   <!-- Admin Interfaces -->
-  <property name="ControlPanelEnabled"                value="true"/>
+  <property name="ControlPanelEnabled"                value="${SDTD_CONTROL_PANEL_ENABLED-false}"/>
   <property name="ControlPanelPort"                   value="${SDTD_CONTROL_PANEL_PORT-8080}"/>
   <property name="ControlPanelPassword"               value="${SDTD_CONTROL_PANEL_PASSWORD-CHANGEME}"/>
 
