@@ -4,17 +4,62 @@ set -euo pipefail
 
 DATA_DIR=/data
 SERVER_DIR=/server
+VERSION_FILE="${SERVER_DIR}/version.txt"
 mkdir -p "${SERVER_DIR}"
 pushd "${SERVER_DIR}"
 
-steamcmd \
-  +@ShutdownOnFailedCommand 1 \
-  +@NoPromptForPassword 1 \
-  +login anonymous \
-  +force_install_dir "${SERVER_DIR}" \
-  +app_update 294420 ${VERSION+-beta "${VERSION}"} -validate \
-  +quit &
-update_pid=$!
+app_id=294420
+
+fetch_build_id() {
+  if [[ -z "${VERSION-}" ]] || [[ "${VERSION}" == stable ]]; then
+    branch=public
+  else
+    branch="${VERSION}"
+  fi
+
+  steamcmd \
+    +@ShutdownOnFailedCommand 1 \
+    +@NoPromptForPassword 1 \
+    +login anonymous \
+    +app_info_update 1 \
+    +app_info_print "${app_id}" \
+    +quit | \
+      sed '1,/"branches"/d' | \
+      sed "1,/\"${branch}\"/d" | \
+      sed '/\}/q' | \
+      sed -n -E 's/.*"buildid"\s+"([0-9]+)".*/\1/p'
+}
+
+update() {
+  steamcmd \
+    +@ShutdownOnFailedCommand 1 \
+    +@NoPromptForPassword 1 \
+    +login anonymous \
+    +force_install_dir "${SERVER_DIR}" \
+    +app_update "${app_id}" ${VERSION+-beta "${VERSION}"} -validate \
+    +quit
+
+  echo "${1}" > "${VERSION_FILE}"
+}
+
+update_if_needed() {
+  latest_version="$(fetch_build_id)"
+
+  if installed_version="$(cat "${VERSION_FILE}" 2>/dev/null)"; then
+    if [[ "${installed_version}" -eq "${latest_version}" ]]; then
+      echo "Server version ${installed_version} is up-to-date."
+      return
+    fi
+
+    echo "Updating server from version ${installed_version} to ${latest_version}."
+  else
+    echo "Installing server version ${latest_version} …"
+  fi
+
+  update "${latest_version}"
+}
+
+update_if_needed
 
 while IFS='=' read -r name value ; do
   if [[ "${name}" =~ ^7D2D_ ]]; then
@@ -146,10 +191,6 @@ EOF
 
 export LD_LIBRARY_PATH=.
 
-if ! [[ -f ./7DaysToDieServer.x86_64 ]]; then
-  wait "${update_pid}"
-fi
-
 exit_code=0
 ./7DaysToDieServer.x86_64 \
   -configfile=./serverconfig.xml \
@@ -162,13 +203,6 @@ server_pid=$!
 
 wait_for_server() {
   wait "${server_pid}" || exit_code=$?
-
-  # If the server failed, wait for the update to complete
-  # to ensure all filed are validated for the next start.
-  if [[ "${exit_code}" -ne 0 ]]; then
-    wait "${update_pid}"
-  fi
-
   exit "${exit_code}"
 }
 
