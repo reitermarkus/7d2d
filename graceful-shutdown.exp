@@ -6,20 +6,18 @@ set password $::env(SDTD_TELNET_PASSWORD)
 
 spawn telnet localhost $port
 
-expect "Please enter password:"
 log_user 0
-send "$password\r"
-expect "\r"
-log_user 1
-puts "\n********"
+expect "Please enter password:"
+send "$password\n"
 expect "Logon successful"
+log_user 1
 
-send "saveworld\r"
+send "saveworld\n"
 expect {
   "World saved" {}
   "Command 'saveworld' can only be executed when a game is started" {}
 }
 
-send "shutdown\r"
-send "exit\r"
+send "shutdown\n"
+send "exit\n"
 expect eof
