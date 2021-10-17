@@ -10,6 +10,14 @@ pushd "${SERVER_DIR}"
 
 app_id=294420
 
+steamcmd() {
+  "${STEAMCMDDIR}/steamcmd.sh" \
+    +@ShutdownOnFailedCommand 1 \
+    +@NoPromptForPassword 1 \
+    +login anonymous \
+    "${@}"
+}
+
 fetch_build_id() {
   if [[ -z "${VERSION-}" ]] || [[ "${VERSION}" == stable ]]; then
     branch=public
@@ -18,9 +26,6 @@ fetch_build_id() {
   fi
 
   steamcmd \
-    +@ShutdownOnFailedCommand 1 \
-    +@NoPromptForPassword 1 \
-    +login anonymous \
     +app_info_update 1 \
     +app_info_print "${app_id}" \
     +quit | \
@@ -32,9 +37,6 @@ fetch_build_id() {
 
 update() {
   steamcmd \
-    +@ShutdownOnFailedCommand 1 \
-    +@NoPromptForPassword 1 \
-    +login anonymous \
     +force_install_dir "${SERVER_DIR}" \
     +app_update "${app_id}" ${VERSION+-beta "${VERSION}"} -validate \
     +quit
