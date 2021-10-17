@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-DATA_DIR=/data
-SERVER_DIR=/server
 VERSION_FILE="${SERVER_DIR}/version.txt"
 mkdir -p "${SERVER_DIR}"
 pushd "${SERVER_DIR}"
