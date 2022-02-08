@@ -1,8 +1,8 @@
 #!/usr/bin/expect -f
 
 set timeout 5
-set port $::env(SDTD_TELNET_PORT)
-set password $::env(SDTD_TELNET_PASSWORD)
+set port $::env(TELNET_PORT)
+set password $::env(TELNET_PASSWORD)
 
 spawn telnet localhost $port
 
