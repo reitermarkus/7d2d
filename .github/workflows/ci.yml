@@ -5,3 +5,5 @@ name: CI
 jobs:
   ci:
     uses: reitermarkus/.github/.github/workflows/docker-build-push.yml@main
+    with:
+      platforms: linux/amd64
