@@ -61,16 +61,6 @@ update_if_needed() {
 
 update_if_needed
 
-while IFS='=' read -r name value ; do
-  if [[ "${name}" =~ ^7D2D_ ]]; then
-    declare "${name/#7D2D_/}=${value}"
-  fi
-  
-  if [[ "${name}" =~ ^SDTD_ ]]; then
-    declare "${name/#SDTD_/}=${value}"
-  fi
-done < <(env)
-
 MODS_DIR="${DATA_DIR}/Mods"
 mkdir -p "${MODS_DIR}"
 ln -sfn "${MODS_DIR}" Mods
