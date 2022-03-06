@@ -13,5 +13,5 @@ e.g. to set `ServerName` in `serverconfig.xml`, use the `SERVER_NAME` environmen
 
 | Directory | Description                                          |
 |-----------|------------------------------------------------------|
-| `/data`   | Saves, worlds and mods are stores in this directory. |
-| `/server` | The server is installed in this directory.           |
+| `/data`   | Saves, worlds and mods are stored in this directory. |
+| `/server` | The games server is installed in this directory.     |
