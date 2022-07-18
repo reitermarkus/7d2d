@@ -42,10 +42,23 @@ update() {
   echo "${1}" > "${VERSION_FILE}"
 }
 
+UPDATE_INTERVAL_SECONDS=3600
+
 update_if_needed() {
-  latest_version="$(fetch_build_id)"
+  local installed_version
+  local latest_version
 
   if installed_version="$(cat "${VERSION_FILE}" 2>/dev/null)"; then
+    last_check="$(stat -f %m "${VERSION_FILE}")"
+    now="$(date +%s)"
+    
+    if (( (now - last_check) < UPDATE_INTERVAL_SECONDS )); then
+      echo "Skipping update check, already checked within the last ${UPDATE_INTERVAL_SECONDS} seconds."
+      return
+    fi
+
+    latest_version="$(fetch_build_id)"
+
     if [[ "${installed_version}" -eq "${latest_version}" ]]; then
       echo "Server version ${installed_version} is up-to-date."
       return
@@ -53,6 +66,8 @@ update_if_needed() {
 
     echo "Updating server from version ${installed_version} to ${latest_version}."
   else
+    latest_version="$(fetch_build_id)"
+
     echo "Installing server version ${latest_version} …"
   fi
 
