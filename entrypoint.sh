@@ -49,7 +49,7 @@ update_if_needed() {
   local latest_version
 
   if installed_version="$(cat "${VERSION_FILE}" 2>/dev/null)"; then
-    last_check="$(stat -f %m "${VERSION_FILE}")"
+    last_check="$(stat -c %X "${VERSION_FILE}")"
     now="$(date +%s)"
     
     if (( (now - last_check) < UPDATE_INTERVAL_SECONDS )); then
