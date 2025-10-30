@@ -51,7 +51,7 @@ update_if_needed() {
   if installed_version="$(cat "${VERSION_FILE}" 2>/dev/null)"; then
     last_check="$(stat -c %Y "${VERSION_FILE}")"
     now="$(date +%s)"
-    
+
     if (( (now - last_check) < UPDATE_INTERVAL_SECONDS )); then
       echo "Skipping update check, already checked within the last ${UPDATE_INTERVAL_SECONDS} seconds."
       return
