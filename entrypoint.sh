@@ -153,7 +153,7 @@ cat > serverconfig.xml <<EOF
   <property name="BuildCreate"                         value="${BUILD_CREATE-false}"/>
   <property name="DayNightLength"                      value="${DAY_NIGHT_LENGTH-60}"/>
   <property name="DayLightLength"                      value="${DAY_LIGHT_LENGTH-18}"/>
-  <property name="DropOnDeath"                         value="${DROP_ON_DEATH-0}"/>
+  <property name="DropOnDeath"                         value="${DROP_ON_DEATH-1}"/>
   <property name="DropOnQuit"                          value="${DROP_ON_QUIT-0}"/>
   <property name="BedrollDeadZoneSize"                 value="${BEDROLL_DEAD_ZONE_SIZE-15}"/>
 
@@ -175,7 +175,7 @@ cat > serverconfig.xml <<EOF
 
   <!-- Loot -->
   <property name="LootAbundance"                       value="${LOOT_ABUNDANCE-100}"/>
-  <property name="LootRespawnDays"                     value="${LOOT_RESPAWN_DAYS-30}"/>
+  <property name="LootRespawnDays"                     value="${LOOT_RESPAWN_DAYS-7}"/>
   <property name="AirDropFrequency"                    value="${AIR_DROP_FREQUENCY-72}"/>
   <property name="AirDropMarker"                       value="${AIR_DROP_MARKER-false}"/>
 
