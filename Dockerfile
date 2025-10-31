@@ -1,4 +1,4 @@
-FROM cm2network/steamcmd:root
+FROM docker.io/cm2network/steamcmd:root
 
 RUN apt-get update \
   && apt-get install --no-install-recommends -y expect=5.45.4-2+b1 telnet=0.17+2.4-2+deb12u1 \

@@ -113,10 +113,6 @@ cat > serverconfig.xml <<EOF
   <property name="ServerAdminSlotsPermission"         value="${SERVER_ADMIN_SLOTS_PERMISSION-0}"/>
 
   <!-- Admin Interfaces -->
-  <property name="ControlPanelEnabled"                value="${CONTROL_PANEL_ENABLED-false}"/>
-  <property name="ControlPanelPort"                   value="${CONTROL_PANEL_PORT-8080}"/>
-  <property name="ControlPanelPassword"               value="${CONTROL_PANEL_PASSWORD-CHANGEME}"/>
-
   <property name="TelnetEnabled"                      value="true"/>
   <property name="TelnetPort"                         value="${TELNET_PORT}"/>
   <property name="TelnetPassword"                     value="${TELNET_PASSWORD}"/>
