@@ -11,6 +11,6 @@ RUN mkdir -p "${DATA_DIR}" "${SERVER_DIR}" \
 
 USER ${USER}
 
-COPY graceful-shutdown.exp /graceful-shutdown
+COPY graceful-shutdown.exp /graceful-shutdown.exp
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
