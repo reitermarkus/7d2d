@@ -214,7 +214,7 @@ wait_for_server() {
 graceful_shutdown() {
   signal="${1}"
   echo "Received ${signal}, shutting down."
-  /graceful-shutdown || kill "${server_pid}"
+  /graceful-shutdown.exp || kill "${server_pid}"
   wait_for_server
 }
 
