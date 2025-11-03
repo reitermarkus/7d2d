@@ -211,6 +211,7 @@ wait_for_server() {
   exit "${exit_code}"
 }
 
+# shellcheck disable=SC2317
 graceful_shutdown() {
   signal="${1}"
   echo "Received ${signal}, shutting down."
