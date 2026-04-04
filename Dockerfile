@@ -1,7 +1,7 @@
 FROM docker.io/cm2network/steamcmd:root
 
 RUN apt-get update \
-  && apt-get install --no-install-recommends -y expect=5.45.4-2+b1 telnet=0.17+2.4-2+deb12u1 \
+  && apt-get install --no-install-recommends -y tcl-expect=5.45.4-4 inetutils-telnet=2:2.6-3+deb13u3 \
   && rm -rf /var/lib/apt/lists/*
 
 ENV DATA_DIR=/data
