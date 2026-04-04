@@ -1,4 +1,4 @@
-FROM docker.io/cm2network/steamcmd:root
+FROM docker.io/cm2network/steamcmd:root@sha256:e6b6b3503bf0e41feafe12dc709c90151afba193e1292cac55d28a7d470b1493
 
 RUN apt-get update \
   && apt-get install --no-install-recommends -y tcl-expect=5.45.4-4 inetutils-telnet=2:2.6-3+deb13u3 \
