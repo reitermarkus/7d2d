@@ -1,4 +1,4 @@
-#!/usr/bin/expect -f
+#!/usr/bin/env expect -f
 
 set timeout 5
 set port $::env(TELNET_PORT)
